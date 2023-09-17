@@ -1,0 +1,10 @@
+window.csrfToken=$('meta[name="csrf-token"]').attr('content');toastr.options={"positionClass":`${window.lang==='ar'?"toast-top-left":"toast-top-right"}`,"closeButton":false,"debug":false,"newestOnTop":false,"progressBar":false,"preventDuplicates":false,"onclick":null,"showDuration":"300","hideDuration":"1000","timeOut":"5000","extendedTimeOut":"1000","showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"};function showFormErrors(err,by='name'){$('.text-danger').remove();if(err.responseJSON.hasOwnProperty('errors')){$.each(err.responseJSON.errors,function(i,error){var el=$(document).find('[name="'+i+'"]');if(by==='id'){el=$(document).find('[id="'+i+'"]')}
+let $parent_class='.form-group';if(i==='payment_type'){$parent_class='.form-group-payment-type';}
+let $form_group=el.parents($parent_class);if(el.parents('.form-group').hasClass('form-group-codes')){$form_group=el.parents('.form-group').find('.form-validation-codes');}
+if(['code.0','code.1','code.2','code.3'].includes(i)){if($form_group.find('.text-danger.text-validation').length>0){$('.text-danger').remove();}}
+$form_group.addClass('error-input');$form_group.append($('<span class="text-danger mt-2 text-validation">'+error[0]+'</span>'));});}}
+function handleCSRFError(res){if(res.status===419){toastr["error"]("Security Code Expired. Page will refresh automatically");window.location.reload();}}
+function showLoading(){$('.loading-area').addClass('active');}
+function hideLoading(){$('.loading-area').removeClass('active');}
+var customConfig=function(){'use strict';var loadConfig=function(){$.ajaxSetup({headers:{'X-CSRF-TOKEN':window.csrfToken}});$(document).on('ajaxStart',function(){showLoading();});$(document).on('ajaxStop',function(){hideLoading();});}
+return{init:function(){loadConfig();}};}();$(document).ready(function(){customConfig.init();});
